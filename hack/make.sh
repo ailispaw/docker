@@ -72,6 +72,7 @@ if command -v git &> /dev/null && git rev-parse &> /dev/null; then
 	if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
 		GITCOMMIT="$GITCOMMIT-dirty"
 	fi
+	GITCOMMIT="$GITCOMMIT-stripped"
 	BUILDTIME=$(date -u)
 elif [ "$DOCKER_GITCOMMIT" ]; then
 	GITCOMMIT="$DOCKER_GITCOMMIT"
@@ -135,7 +136,7 @@ fi
 IAMSTATIC='true'
 source "$SCRIPTDIR/make/.go-autogen"
 if [ -z "$DOCKER_DEBUG" ]; then
-	LDFLAGS='-w'
+	LDFLAGS='-w -s'
 fi
 
 LDFLAGS_STATIC='-linkmode external'
