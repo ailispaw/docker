@@ -71,6 +71,7 @@ if command -v git &> /dev/null && git rev-parse &> /dev/null; then
 	if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
 		GITCOMMIT="$GITCOMMIT-unsupported"
 	fi
+	GITCOMMIT="$GITCOMMIT-stripped"
 	! BUILDTIME=$(date --rfc-3339 ns | sed -e 's/ /T/') &> /dev/null
 	if [ -z $BUILDTIME ]; then
 		# If using bash 3.1 which doesn't support --rfc-3389, eg Windows CI
@@ -134,7 +135,7 @@ fi
 IAMSTATIC='true'
 source "$SCRIPTDIR/make/.go-autogen"
 if [ -z "$DOCKER_DEBUG" ]; then
-	LDFLAGS='-w'
+	LDFLAGS='-w -s'
 fi
 
 LDFLAGS_STATIC=''
